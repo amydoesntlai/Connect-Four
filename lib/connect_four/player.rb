@@ -29,6 +29,9 @@ class Player
     db.execute("UPDATE players SET wins = ?, losses = ?, draws = ? WHERE name = ?", @wins, @losses, @draws, @name)
     self
   end
+
+  def move
+  end
 end
 
 # player.update_db(players.db, 'Fred')

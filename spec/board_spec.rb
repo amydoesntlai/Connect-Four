@@ -130,4 +130,34 @@ describe Board do
     end
   end
 
+  describe "win?" do
+    before :each do
+      board.stub(:column_values)
+      board.stub(:get_value_at)
+      board.stub(:row_values)
+      board.stub(:diagonal_values)
+    end
+
+    context "when there is a column connect four" do
+      it "returns true" do
+        board.stub(:connect_four?).and_return(true)
+        board.should be_win
+      end
+    end
+
+    context "when there is a column connect four" do
+      it "returns true" do
+        board.stub(:connect_four?).and_return(false, true)
+        board.should be_win
+      end
+    end
+
+    context "when there is a column connect four" do
+      it "returns true" do
+        board.stub(:connect_four?).and_return(false, false, true)
+        board.should be_win
+      end
+    end
+  end
+
 end

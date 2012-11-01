@@ -37,11 +37,17 @@ class Board
   end
 
   def win?
-    connect_four?(column_values) || connect_four?(row_values) # || connect_four(diagonal_values)
+    connect_four?(column_values) || connect_four?(row_values) || connect_four?(diagonal_values)
   end
 
   def full?
     row_values.all? { |value| value != 0 } && @last_row_played == 5
+  end
+
+  def diagonal_values
+    row_values = []
+    0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(@last_row_played) }
+    row_values
   end
 
 end
