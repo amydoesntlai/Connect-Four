@@ -32,6 +32,18 @@ class Player
 
   def move
   end
+
+  def win_game
+    @wins += 1
+  end
+
+  def lose_game
+    @losses += 1
+  end
+
+  def draw_game
+    @draws += 1
+  end
 end
 
 # player.update_db(players.db, 'Fred')

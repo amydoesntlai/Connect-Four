@@ -100,20 +100,25 @@ describe Player do
     end
   end
 
-  context '#win' do
-    it 'increments the player win total by 1'
+  context '#win_game' do
+    it 'increments the player win total by 1' do
+      expect { @player.win_game }.to change { @player.wins }.by(1)
+    end
 
   end
 
-  context '#lose' do
-    it 'increments the player losses total by 1'
-
+  context '#lose_game' do
+    it 'increments the player losses total by 1' do
+      expect { @player.lose_game }.to change { @player.losses }.by(1)
+    end
   end
 
-  context '#draw' do
-    it 'inrements the player draws total by 1'
-
+  context '#draw_game' do
+    it 'inrements the player draws total by 1' do
+      expect { @player.draw_game }.to change { @player.draws }.by(1)
+    end
   end
+
 end
 
 
