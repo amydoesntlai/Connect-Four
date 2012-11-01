@@ -11,7 +11,7 @@ class Column
     @values[position]
   end
 
-  def insert(item)
+  def insert(item) #drop piece/chip
     raise("Column is full!") if @number_of_pieces == 6
     @values[@number_of_pieces] = item
     @number_of_pieces += 1
