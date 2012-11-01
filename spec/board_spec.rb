@@ -4,37 +4,46 @@ describe Board do
   let(:board)  { Board.new }
   let(:column) { Column.new }
   context "#initialize" do
-    it "should have 7 columns" do
+    it "has 7 columns" do
       board.columns.length.should eq(7)
     end
 
-    it "should contain Column objects" do
+    it "contains Column objects" do
       board.columns[0].should be_an_instance_of(Column)
     end
 
-    it "should initialize game_over as false" do
+    it "initializes game_over as false" do
       board.game_over.should be false
     end
   end
 
   context "#insert" do
-    it "should insert token into the Column object" do
-      board.columns[1].should_receive(:insert).with('Black')
-      board.insert(1, 'Black')
+    it "inserts token into the Column object" do
+      board.columns[1].should_receive(:insert).with(:black).and_return(1)
+      board.insert(1, :black)
     end
   end
 
   context "#get_value_at" do
-    it "should check y value of a row in a column" do
-      board.columns[1].should_receive(:get_value_at).with(2)
-      board.get_value_at(1, 2)
+    it "checks value of a row in a column" do
+      board.columns[1].stub(:get_value_at).and_return(:black)
+      board.get_value_at(1, 2).should == :black
     end
   end
 
   context "#column_values" do
-    it "should return all column values" do
-      board.columns[2].should_receive(:get_value_at).exactly(6).times
-      board.column_values(2)
+    it "returns all column values" do
+      board.insert(2, :black)
+      board.columns[2].stub(:get_value_at).and_return(:black)
+      board.column_values.should == [:black, :black, :black, :black, :black, :black]
+    end
+  end
+
+  context "#row_values" do
+    it "returns all row values" do
+      board.insert(2, :red)
+      0.upto(6) { |i| board.columns[i].stub(:get_value_at).and_return(:red) }
+      board.row_values.should == [:red, :red, :red, :red, :red, :red, :red]
     end
   end
 
@@ -51,12 +60,74 @@ describe Board do
     it "should change game_over to true if it calls diagonal win"
   end
 
-  context "column_win?" do
-    it "should return true if it has 4 of the same pieces in the same column" do
-      board.columns[2].should_receive(:get_value_at).exactly(6).times.and_return(:black)
-      board.column_win?(2).should be_true
+  context "#connect_four?" do
+    it "is true when passed four consecutive reds" do
+      array = [:red, :red, :red, :red]
+      board.connect_four?(array).should be_true
     end
+
+    it "is false when passed alternating reds and blacks" do
+      array = [:red, :black, :red, :black, :red]
+      board.connect_four?(array).should be_false
+    end
+
+    it "is false when passed with four reds with an empty space in between" do
+      array = [:red, :red, 0, :red, :red]
+      board.connect_four?(array).should be_false
+    end
+
   end
 
+  context "#win?" do
+    it "returns true when there is a connect four on a column" do
+      board.insert(0, :black)
+      board.columns[0].stub(:get_value_at).and_return(:black)
+      board.win?.should be_true
+    end
+
+    it "returns true when there is a connect four on a row" do
+      board.insert(0, :red)
+      0.upto(6) { |i| board.columns[i].stub(:get_value_at).and_return(:red) }
+      board.win?.should be_true
+    end
+
+    it "returns true when there is a connect four on a diagonal"
+
+    it "returns false when there is a draw" do
+      0.upto(2) do |column|
+        3.times { board.insert(column, :red) }
+        3.times { board.insert(column, :black) }
+      end
+      3.upto(5) do |column|
+        3.times { board.insert(column, :black) }
+        3.times { board.insert(column, :red) }
+      end
+      3.times { board.insert(6, :red) }
+      3.times { board.insert(6, :black) }
+      board.win?.should be_false
+    end
+
+    it "returns false when the game is not finished" do
+      0.upto(2) do |column|
+        3.times { board.insert(column, :red) }
+        3.times { board.insert(column, :black) }
+      end
+      board.win?.should be_false
+    end
+
+  end
+
+  context "#full?" do
+    it "returns true when the board is full" do
+      0.upto(6) { |column| 6.times { board.insert(column, :red) } }
+      board.full?.should be_true
+    end
+
+    it "returns false when there are still empty spaces" do
+      0.upto(6) { |column| 5.times { board.insert(column, :red) } }
+      board.insert(4, :red)
+      board.full?.should be_false
+    end
+  end
 
 end
