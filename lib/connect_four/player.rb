@@ -1,5 +1,3 @@
-require 'sqlite3'
-
 class Player
 
   attr_accessor :name, :email, :wins, :losses, :draws

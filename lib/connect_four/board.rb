@@ -1,5 +1,3 @@
-require_relative './column.rb'
-
 class Board
   attr_reader :columns, :game_over, :insert, :last_row_played
   def initialize

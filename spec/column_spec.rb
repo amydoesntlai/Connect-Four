@@ -1,7 +1,4 @@
-#column_spec.rb
-
-require_relative '../lib/column.rb'
-
+require_relative 'spec_helper'
 
 describe Column do
 

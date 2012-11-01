@@ -1,5 +1,4 @@
-require 'sqlite3'
-require_relative '../lib/player'
+require_relative 'spec_helper'
 
 describe Player do
 

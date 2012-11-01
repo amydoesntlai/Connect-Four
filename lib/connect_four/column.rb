@@ -1,5 +1,3 @@
-# column.rb
-
 class Column
 
   def initialize
