@@ -8,8 +8,14 @@ class Game
   end
 
   def start!
+    puts "Please enter name if you are human or enter CPU to play AI"
+    @player1 = gets.chomp
+    puts "Please enter name if you are human or enter CPU to play AI"
+    @player2 = gets.chomp
     get_players
+    @board.to_s
     begin
+      puts "Please enter move #{current_player.name}: #{current_token}"
       if @board.insert(current_player.move, current_token)
         toggle_player
       else
@@ -38,7 +44,7 @@ class Game
 
   def winner
     toggle_player
-    "winner is #{current_player.name} with #{current_token}"
+    "winner is #{current_player.name}: #{current_token}"
   end
 
   def toggle_player
@@ -51,39 +57,7 @@ class Game
   end
 
   def get_players
-    @players[0] = Human.new("p1", "p1@dbc.com")
-    @players[1] = AI.new("p2", "p2@dbc.com")
+    @player1 =~ /cpu/i ? @players <<  AI.new("#{@player1}", "p1@dbc.com") : @players <<  Human.new("#{@player1}", "p1@dbc.com")
+    @player2 =~ /cpu/i ? @players <<  AI.new("#{@player2}", "p2@dbc.com") : @players <<  Human.new("#{@player2}", "p2@dbc.com")
   end
 end
-
-# game = Game.new
-# game.start!
-
-
-
-# open a new game
-# get 2 players
-  # while player count is less <= 2
-    # player enters name and email
-      # save player to db
-        # if they exist, update player with existing stats
-        # else insert new player into db
-
-# start game
-  # while game is not over
-    # game prints board
-    # ask player where to move
-      # player enters column
-      # game places piece
-      # game checks for winner
-      # game switches to next player
-
-  # if game over and not a draw
-    # increment winning player win count
-    # increment losing player lose count
-  # if game over and a draw
-    # increment both players draw count
-
-  # play again?
-# quit game or restart game?
-
