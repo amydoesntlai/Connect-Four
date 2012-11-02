@@ -7,7 +7,7 @@ describe Game do
   describe '#start!' do
 
     before :each do
-      Player.stub(:new).and_return(mock_player1, mock_player2)
+      Human.stub(:new).and_return(mock_player1, mock_player2)
       game.stub(:over?).exactly(3).times.and_return(false, false, true)
     end
 

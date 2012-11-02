@@ -30,7 +30,7 @@ describe Column do
       @column.insert("X")
       @column.insert("O")
       @column.insert("X")
-      expect { @column.insert("O") }.to raise_error
+      @column.insert("O").should be_nil
     end
 
     it "populates the column at the given place with the given marker" do

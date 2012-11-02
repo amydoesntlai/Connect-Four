@@ -3,7 +3,8 @@ require_relative 'spec_helper'
 describe Player do
 
   before(:each) do
-    @player = Player.new("Gene", "gene@email.com")
+    @player = Human.new("Gene", "gene@email.com")
+    @player.stub(:move).and_return(1)
   end
 
   context '#initialize' do
