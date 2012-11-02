@@ -11,14 +11,14 @@ class Game
   def start!
     puts "Please enter name if you are human or enter CPU to play AI"
     @player1 = gets.chomp
-    unless @player1 == 'CPU'
+    unless @player1 =~ /cpu/i
       puts "Please enter email"
       @player1_email = gets.chomp
     end
 
     puts "Please enter name if you are human or enter CPU to play AI"
     @player2 = gets.chomp
-    unless @player2 == 'CPU'
+    unless @player2 =~ /cpu/i
       puts "Please enter email"
       @player2_email = gets.chomp
     end
