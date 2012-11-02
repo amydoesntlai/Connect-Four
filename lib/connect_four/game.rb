@@ -10,8 +10,12 @@ class Game
   def start!
     puts "Please enter name if you are human or enter CPU to play AI"
     @player1 = gets.chomp
+    puts "Please enter email" unless @player1 == 'CPU'
+    @player1_email = gets.chomp unless @player1 == 'CPU'
     puts "Please enter name if you are human or enter CPU to play AI"
     @player2 = gets.chomp
+    puts "Please enter email" unless @player2 == 'CPU'
+    @player2_email = gets.chomp unless @player2 == 'CPU'
     get_players
     @board.to_s
     begin
@@ -57,7 +61,7 @@ class Game
   end
 
   def get_players
-    @player1 =~ /cpu/i ? @players <<  AI.new("#{@player1}", "p1@dbc.com") : @players <<  Human.new("#{@player1}", "p1@dbc.com")
-    @player2 =~ /cpu/i ? @players <<  AI.new("#{@player2}", "p2@dbc.com") : @players <<  Human.new("#{@player2}", "p2@dbc.com")
+    @player1 =~ /cpu/i ? @players <<  AI.new("#{@player1}", "AI@dbc.com") : @players <<  Human.new("#{@player1}", "#{@player1_email}")
+    @player2 =~ /cpu/i ? @players <<  AI.new("#{@player2}", "AI@dbc.com") : @players <<  Human.new("#{@player2}", "#{@player2_email}")
   end
 end
