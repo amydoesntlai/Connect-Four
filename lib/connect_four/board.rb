@@ -26,28 +26,50 @@ class Board
     row_values
   end
 
+  def positive_diagonal_values
+    diagonal_values = []
+    if @last_row_played > @last_column_played
+      row_num = @last_row_played - @last_column_played #3
+      column_num = 0
+    elsif @last_column_played > @last_row_played
+      row_num = 0
+      column_num = @last_column_played - @last_row_played
+    else
+      row_num = 0
+      column_num = 0
+    end
+    while column_num < 7 && row_num < 6
+      diagonal_values << @columns[column_num].get_value_at(row_num)
+      column_num += 1
+      row_num += 1
+    end
+    diagonal_values
+  end
+
   def winner
     @game_over = true
   end
 
   def connect_four?(values)
-    red_win = [:red, :red, :red, :red]
-    black_win = [:black , :black, :black, :black]
-    values.each_cons(4).any? { |four| four == red_win || four == black_win }
+    o_win = ["O", "O", "O", "O"]
+    x_win = ["X" , "X", "X", "X"]
+    values.each_cons(4).any? { |four| four == o_win || four == x_win }
   end
 
   def win?
-    connect_four?(column_values) || connect_four?(row_values) || connect_four?(diagonal_values)
+    connect_four?(column_values) || connect_four?(row_values) # || connect_four?(diagonal_values)
   end
 
   def full?
-    row_values.all? { |value| value != 0 } && @last_row_played == 5
+    row_values.all? { |value| value != " " } && @last_row_played == 5
   end
 
-  def diagonal_values
-    row_values = []
-    0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(@last_row_played) }
-    row_values
+  def to_s
+    5.downto(0) do |row_num|
+      row_values = []
+      0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(row_num) }
+      puts row_values.join(' | ')
+    end
+    return
   end
-
 end

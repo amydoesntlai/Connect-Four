@@ -11,7 +11,7 @@ class Game
       if board.insert(current_player.move, current_player.name)
         toggle_player
       else
-        puts "invalid move"
+        "invalid move"
       end
     end
   end

@@ -2,7 +2,7 @@ class Column
 
   def initialize
     @number_of_pieces = 0
-    @values = Array.new(6, 0)
+    @values = Array.new(6, " ")
   end
 
   def get_value_at(position)
