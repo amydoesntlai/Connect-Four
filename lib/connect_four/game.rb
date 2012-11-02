@@ -1,3 +1,5 @@
+require_relative '../connect_four'
+
 class Game
 
   def initialize
@@ -49,6 +51,9 @@ class Game
 
 
 end
+
+game = Game.new
+game.start!
 
 
 
