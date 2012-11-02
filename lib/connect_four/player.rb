@@ -22,7 +22,7 @@ class Player
 
   def load_from_db(db)
     player_info = retrieve_from_db(db).flatten
-    new_player = Player.new(player_info[0], player_info[1], player_info[2], player_info[3], player_info[4])
+    new_player = Human.new(player_info[0], player_info[1], player_info[2], player_info[3], player_info[4])
   end
 
   def update_db(db)#, name, email, wins, losses, draws)
@@ -30,17 +30,8 @@ class Player
     self
   end
 
-  def human_move
-    move = gets.chomp.to_i
-    if move > 7 || move < 1
-      puts "invalid move, try again!?!?"
-      move = human_move
-    end
-    move
-  end
-
-  def ai_move
-    rand(7) + 1
+  def move
+    raise ("This method must be initialized by a subclass.")
   end
 
   def win_game
@@ -56,4 +47,21 @@ class Player
   end
 end
 
+
+class Human < Player
+  def move
+    next_move = gets.chomp.to_i
+    if next_move > 7 || next_move < 1
+      puts "invalid move, try again!?!?"
+      next_move = move
+    end
+    next_move
+  end
+end
+
+class AI < Player
+  def move
+    rand(7) + 1
+  end
+end
 # player.update_db(players.db, 'Fred')

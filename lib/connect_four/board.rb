@@ -78,6 +78,7 @@ class Board
       0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(row_num) }
       puts row_values.join(' | ')
     end
+    puts "-" * 25
     return
   end
 end

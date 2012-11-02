@@ -1,29 +1,28 @@
 require_relative '../connect_four'
 
 class Game
-
   def initialize
     @board = Board.new
-    @players = [ Player.new("bill", "bill@bronsky.com"), Player.new("sam", "sam@sam.com") ]
+    @players = []
     @tokens = ['X', 'O']
   end
 
   def start!
     get_players
     begin
-      if @board.insert(current_player.human_move, current_token)
+      if @board.insert(current_player.move, current_token)
         toggle_player
       else
         puts "invalid move, try again!!!!"
       end
       @board.to_s
-    end while !over?
-    toggle_player
-    puts "winner is #{current_player.name} with #{current_token}"
+    end until over?
+    puts tie if @board.full?
+    puts winner if @board.win?
   end
 
   def over?
-    @board.full? || @board.win?
+    @board.win? || @board.full?
   end
 
   private
@@ -31,6 +30,15 @@ class Game
 
   def current_player
     @players.first
+  end
+
+  def tie
+    "Tie! SUDDEN DEATH!"
+  end
+
+  def winner
+    toggle_player
+    "winner is #{current_player.name} with #{current_token}"
   end
 
   def toggle_player
@@ -43,13 +51,9 @@ class Game
   end
 
   def get_players
-    @players[0] = Player.new("p1", "p1@dbc.com")
-    @players[1] = Player.new("p2", "p2@dbc.com")
-
-    # if name == cpu, use ai for player
+    @players[0] = Human.new("p1", "p1@dbc.com")
+    @players[1] = AI.new("p2", "p2@dbc.com")
   end
-
-
 end
 
 game = Game.new
