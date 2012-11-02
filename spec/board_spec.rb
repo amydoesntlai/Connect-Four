@@ -10,7 +10,7 @@ describe Board do
 
   context "#insert" do
     it "inserts token into the Column object" do
-      board.columns[1].should_receive(:insert).with("X").and_return(1)
+      board.columns[0].should_receive(:insert).with("X").and_return(1)
       board.insert(1, "X")
     end
   end
@@ -25,7 +25,7 @@ describe Board do
   context "#column_values" do
     it "returns all column values" do
       board.insert(2, "X")
-      board.columns[2].stub(:get_value_at).and_return("X")
+      board.columns[1].stub(:get_value_at).and_return("X")
       board.column_values.should eq ["X", "X", "X", "X", "X", "X"]
     end
   end
@@ -40,9 +40,9 @@ describe Board do
 
   context "#diagonal_values" do
     it "returns positive slope diagonal values" do
-      board.insert(3, "O")
+      board.insert(4, "O")
       board.positive_diagonal_values.should eq ["O", " ", " ", " "]
-      3.times { board.insert(4, "O") }
+      3.times { board.insert(5, "O") }
       board.positive_diagonal_values.should eq [" ", " ", "O", " ", " "]
     end
   end
@@ -67,25 +67,25 @@ describe Board do
 
   context "#win?" do
     it "returns true when there is a connect four on a column" do
-      board.insert(0, "X")
+      board.insert(1, "X")
       board.columns[0].stub(:get_value_at).and_return("X")
       board.win?.should be_true
     end
 
     it "returns true when there is a connect four on a row" do
-      board.insert(0, "O")
+      board.insert(1, "O")
       0.upto(6) { |i| board.columns[i].stub(:get_value_at).and_return("O") }
       board.win?.should be_true
     end
 
     it "returns true when there is a connect four on a positive slope diagonal" do
-      board.insert(0, "O")
-      board.insert(1, "X")
       board.insert(1, "O")
-      2.times { board.insert(2, "X") }
+      board.insert(2, "X")
       board.insert(2, "O")
-      3.times { board.insert(3, "X") }
+      2.times { board.insert(3, "X") }
       board.insert(3, "O")
+      3.times { board.insert(4, "X") }
+      board.insert(4, "O")
       board.win?.should be_true
     end
 
