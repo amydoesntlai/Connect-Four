@@ -13,21 +13,25 @@ class Player
   def save_to_db(db)
     # db = SQLite3::Database.new("player.db")
     db.execute("CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name varchar, email varchar UNIQUE, wins integer, losses integer, draws integer, created_at datetime)")
-    db.execute("INSERT INTO players (name, email, wins, losses, draws, created_at) VALUES ( ?, ?, ?, ?, ?, DATETIME('now') )", @name, @email, @wins, @losses, @draws)
+    begin
+      db.execute("INSERT INTO players (name, email, wins, losses, draws, created_at) VALUES ( ?, ?, ?, ?, ?, DATETIME('now') )", @name, @email, @wins, @losses, @draws)
+    rescue SQLite3::Exception => e
+    end
   end
 
   def retrieve_from_db(db)
-    db.execute("SELECT name, email, wins, losses, draws FROM players WHERE name = ?", @name)
+    db.execute("SELECT name, email, wins, losses, draws FROM players WHERE email = ?", @email)
   end
 
   def load_from_db(db)
-    player_info = retrieve_from_db(db).flatten
+    player_info = self.retrieve_from_db(db).flatten
     new_player = Human.new(player_info[0], player_info[1], player_info[2], player_info[3], player_info[4])
+    new_player
   end
 
   def update_db(db)#, name, email, wins, losses, draws)
-    db.execute("UPDATE players SET wins = ?, losses = ?, draws = ? WHERE name = ?", @wins, @losses, @draws, @name)
-    self
+    db.execute("UPDATE players SET wins = ?, losses = ?, draws = ? WHERE email = ?", @wins, @losses, @draws, @email)
+    # self
   end
 
   def move
