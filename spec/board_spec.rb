@@ -56,19 +56,6 @@ describe Board do
     end
   end
 
-  context "#winner" do
-    it "should change game_over to true" do
-      expect { board.winner }.to change{ board.game_over }.from(false).to(true)
-    end
-
-    it "should change game_over to true if it calls row win"
-
-    it "should change game_over to true if it calls column win"
-      # expect { board.column_win }.to change{ board.game_over }.from(false).to(true)
-
-    it "should change game_over to true if it calls diagonal win"
-  end
-
   context "#connect_four?" do
     it "is true when passed four consecutive o's" do
       array = ["O", "O", "O", "O"]
@@ -100,7 +87,48 @@ describe Board do
       board.win?.should be_true
     end
 
-    it "returns true when there is a connect four on a diagonal"
+    it "returns true when there is a connect four on a positive slope diagonal" do
+      board.insert(0, "O")
+      board.insert(1, "X")
+      board.insert(1, "O")
+      2.times { board.insert(2, "X") }
+      board.insert(2, "O")
+      3.times { board.insert(3, "X") }
+      board.insert(3, "O")
+      board.win?.should be_true
+    end
+
+    it "returns false when there is not a connect four on a positive slope diagonal" do
+      board.insert(0, "O")
+      board.insert(1, "X")
+      board.insert(1, "X")
+      2.times { board.insert(2, "X") }
+      board.insert(2, "O")
+      3.times { board.insert(3, "X") }
+      board.insert(3, "O")
+      board.win?.should be_false
+    end
+
+    it "returns true when there is a connect four on a (negative diagonal that begins on the bottom row)" do
+      board.insert(6, "O")
+      board.insert(5, "X")
+      board.insert(5, "O")
+      2.times { board.insert(4, "X") }
+      board.insert(4, "O")
+      3.times { board.insert(3, "X") }
+      board.insert(3, "O")
+      board.win?.should be_true
+    end
+
+    it "returns true when there is a connect four on a (negative diagonal that begins above the bottom row)" do
+      6.downto(4) { |column| board.insert(column, "X") }
+      board.insert(3, "O")
+      5.downto(3) { |column| board.insert(column, "X") }
+      4.downto(3) { |column| board.insert(column, "X") }
+      board.insert(3, "O")
+      6.downto(3) { |column| board.insert(column, "O") }
+      board.win?.should be_true
+    end
 
     it "returns false when there is a draw" do
       0.upto(2) do |column|
@@ -144,7 +172,8 @@ describe Board do
       board.stub(:column_values)
       board.stub(:get_value_at)
       board.stub(:row_values)
-      # board.stub(:diagonal_values)
+      board.stub(:positive_diagonal_values)
+      board.stub(:negative_diagonal_values)
     end
 
     context "when there is a column connect four" do
@@ -154,19 +183,25 @@ describe Board do
       end
     end
 
-    context "when there is a column connect four" do
+    context "when there is a row connect four" do
       it "returns true" do
         board.stub(:connect_four?).and_return(false, true)
         board.should be_win
       end
     end
 
-    context "when there is a column connect four" do
-      # it "returns true" do
-      #   board.stub(:connect_four?).and_return(false, false, true)
-      #   board.should be_win
-      # end
+    context "when there is a positive_diagonal connect four" do
+      it "returns true" do
+        board.stub(:connect_four?).and_return(false, false, true)
+        board.should be_win
+      end
+    end
+
+    context "when there is a negative_diagonal connect four" do
+      it "returns true" do
+        board.stub(:connect_four?).and_return(false, false, false, true)
+        board.should be_win
+      end
     end
   end
-
 end
