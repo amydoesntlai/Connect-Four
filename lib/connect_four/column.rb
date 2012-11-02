@@ -3,7 +3,7 @@ class Column
   attr_reader :number_of_pieces
   def initialize
     @number_of_pieces = 0
-    @values = Array.new(6, " ")
+    @values = Array.new(6, ".")
   end
 
   def get_value_at(position)

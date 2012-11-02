@@ -1,5 +1,5 @@
 class Board
-  attr_reader :columns
+  attr_reader :columns, :current_row, :current_column
   def initialize
     @columns = Array.new(7) { Column.new }
   end
@@ -69,16 +69,15 @@ class Board
   end
 
   def full?
-    row_values.all? { |value| value != " " } && @current_row == 5
+    row_values.all? { |value| value != "." } && @current_row == 5
   end
 
   def to_s
     5.downto(0) do |row_num|
       row_values = []
       0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(row_num) }
-      puts row_values.join(' | ')
+      print "|" + row_values.join
     end
-    puts "-" * 25 + "\n1 | 2 | 3 | 4 | 5 | 6 | 7"
-    return
+    print "|\n"
   end
 end

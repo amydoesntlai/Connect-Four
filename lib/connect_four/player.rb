@@ -34,7 +34,7 @@ class Player
     # self
   end
 
-  def move
+  def move(board = nil)
     raise ("This method must be initialized by a subclass.")
   end
 
@@ -53,7 +53,7 @@ end
 
 
 class Human < Player
-  def move
+  def move(board = nil)
     next_move = gets.chomp.to_i
     if next_move > 7 || next_move < 1
       puts "invalid move, try again!?!?"
@@ -63,9 +63,4 @@ class Human < Player
   end
 end
 
-class AI < Player
-  def move
-    rand(7) + 1
-  end
-end
 # player.update_db(players.db, 'Fred')

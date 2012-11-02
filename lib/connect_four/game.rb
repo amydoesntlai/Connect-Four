@@ -25,14 +25,14 @@ class Game
 
     get_players
     puts "\nConnected Four presents Connect 4!!!\n\n"
-    @board.to_s
+    # @board.to_s
     begin
-      if @board.insert(current_player.move, current_token)
+      if @board.insert(current_player.move(@board), current_token)
         toggle_player
       else
         puts "invalid move, try again!!!!"
       end
-      @board.to_s
+      # @board.to_s
     end until over?
     puts tie if @board.full?
     winner if @board.win?
@@ -82,8 +82,6 @@ class Game
   end
 
   def get_players
-    # @player1 =~ /cpu/i ? @players <<  AI.new("#{@player1}", "AI@dbc.com") : @players <<  Human.new("#{@player1}", "#{@player1_email}")
-    # @player2 =~ /cpu/i ? @players <<  AI.new("#{@player2}", "AI@dbc.com") : @players <<  Human.new("#{@player2}", "#{@player2_email}")
     if @player1 =~ /cpu/i
       @players <<  AI.new("#{@player1}", "AI@dbc.com")
     else
