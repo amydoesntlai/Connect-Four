@@ -9,6 +9,7 @@ class Board
   end
 
   def insert(column_num, token)
+    return if @columns[column_num].number_of_pieces == 6
     @current_row = @columns[column_num].insert(token) - 1
     @current_column = column_num
   end

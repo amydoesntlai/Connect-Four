@@ -9,7 +9,7 @@ class Player
     @losses = losses
     @draws = draws
   end
-  DB_NAME = 'player.db'
+
   def save_to_db(db)
     # db = SQLite3::Database.new("player.db")
     db.execute("CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name varchar, email varchar UNIQUE, wins integer, losses integer, draws integer, created_at datetime)")
@@ -30,7 +30,17 @@ class Player
     self
   end
 
-  def move
+  def human_move
+    move = gets.chomp.to_i
+    if move > 7 || move < 1
+      puts "invalid move, try again!?!?"
+      move = human_move
+    end
+    move
+  end
+
+  def ai_move
+    rand(7) + 1
   end
 
   def win_game
