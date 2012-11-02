@@ -25,12 +25,12 @@ describe Player do
     end
 
     it 'does not add a player who already exists' do
-      @player.save_to_db
-      expect { @player.save }.to raise_error
+      @player.save_to_db(@db)
+      expect { @player.save_to_db(@db) }.to raise_error
     end
 
     it "saves the post to a database" do
-      @player.save_to_db
+      @player.save_to_db(@db)
       @db.execute("select name from players where email = 'gene@email.com'").should == [['Gene']]
     end
 
@@ -53,7 +53,7 @@ describe Player do
     it 'gets all info from database for player matching given player name' do
       #search database
       #if database.name == name, return player.info
-      @player.save_to_db
+      @player.save_to_db(@db)
       @player.retrieve_from_db(@db).should == [['Gene', 'gene@email.com', 0, 0, 0]]
     end
 
@@ -70,7 +70,7 @@ describe Player do
     end
 
     it 'returns a new player with the given info from the database' do
-      @player.save_to_db
+      @player.save_to_db(@db)
       # info = @player.retrieve_from_db(@db).flatten
       @player.load_from_db(@db).name.should == 'Gene'
       @player.load_from_db(@db).wins.should == 0
@@ -91,7 +91,7 @@ describe Player do
       # check player wins from db
       # update player wins and load to db
       # laod player from db again and check to make sure it was updated
-      @player.save_to_db
+      @player.save_to_db(@db)
       # @player.wins.should == 0
       @player.wins += 1
       # expect { @player.update_db(@db) }.to change { @player.wins }.from(0).to(1)

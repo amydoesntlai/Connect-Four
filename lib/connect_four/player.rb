@@ -9,9 +9,9 @@ class Player
     @losses = losses
     @draws = draws
   end
-
-  def save_to_db
-    db = SQLite3::Database.new("player.db")
+  DB_NAME = 'player.db'
+  def save_to_db(db)
+    # db = SQLite3::Database.new("player.db")
     db.execute("CREATE TABLE IF NOT EXISTS players (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name varchar, email varchar UNIQUE, wins integer, losses integer, draws integer, created_at datetime)")
     db.execute("INSERT INTO players (name, email, wins, losses, draws, created_at) VALUES ( ?, ?, ?, ?, ?, DATETIME('now') )", @name, @email, @wins, @losses, @draws)
   end
