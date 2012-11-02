@@ -1,8 +1,7 @@
 class Board
-  attr_reader :columns, :game_over
+  attr_reader :columns
   def initialize
-    @columns   = Array.new(7) { Column.new }
-    @game_over = false
+    @columns = Array.new(7) { Column.new }
   end
 
   def get_value_at(column_num, row)
@@ -60,7 +59,7 @@ class Board
 
   def connect_four?(values)
     o_win = ["O", "O", "O", "O"]
-    x_win = ["X" , "X", "X", "X"]
+    x_win = ["X", "X", "X", "X"]
     values.each_cons(4).any? { |four| four == o_win || four == x_win }
   end
 

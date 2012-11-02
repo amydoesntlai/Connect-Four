@@ -2,18 +2,9 @@ require_relative 'spec_helper'
 
 describe Board do
   let(:board)  { Board.new }
-  let(:column) { Column.new }
   context "#initialize" do
-    it "has 7 columns" do
-      board.columns.length.should eq(7)
-    end
-
     it "contains Column objects" do
       board.columns[0].should be_an_instance_of(Column)
-    end
-
-    it "initializes game_over as false" do
-      board.game_over.should be false
     end
   end
 
