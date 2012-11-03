@@ -25,14 +25,14 @@ class Game
 
     get_players
     puts "\nConnected Four presents Connect 4!!!\n\n"
-    # @board.to_s
+    @board.to_s
     begin
       if @board.insert(current_player.move(@board), current_token)
         toggle_player
       else
         puts "invalid move, try again!!!!"
       end
-      # @board.to_s
+      @board.to_s
     end until over?
     puts tie if @board.full?
     winner if @board.win?

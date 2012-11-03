@@ -9,10 +9,11 @@ class AI < Player
   end
 
   def best_move
-    check_columns
-    # check row
-    # check diag
-    @best_move[0]
+    # check_columns
+    # # check row
+    # # check diag
+    # @best_move[0]
+    rand(7) + 1
   end
 
 

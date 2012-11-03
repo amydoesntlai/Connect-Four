@@ -41,9 +41,9 @@ describe Board do
   context "#diagonal_values" do
     it "returns positive slope diagonal values" do
       board.insert(4, "O")
-      board.positive_diagonal_values.should eq ["O", " ", " ", " "]
+      board.positive_diagonal_values.should eq ["O", ".", ".", "."]
       3.times { board.insert(5, "O") }
-      board.positive_diagonal_values.should eq [" ", " ", "O", " ", " "]
+      board.positive_diagonal_values.should eq [".", ".", "O", ".", "."]
     end
   end
 
@@ -59,7 +59,7 @@ describe Board do
     end
 
     it "is false when passed with four o's with an empty space in between" do
-      array = ["O", "O", " ", "O", "O"]
+      array = ["O", "O", ".", "O", "O"]
       board.connect_four?(array).should be_false
     end
 

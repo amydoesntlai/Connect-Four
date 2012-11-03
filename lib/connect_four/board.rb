@@ -1,3 +1,5 @@
+require './column'
+
 class Board
   attr_reader :columns, :current_row, :current_column
   def initialize
@@ -76,8 +78,27 @@ class Board
     5.downto(0) do |row_num|
       row_values = []
       0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(row_num) }
+      puts row_values.join(' | ')
+    end
+    puts "-" * 25 + "\n1 | 2 | 3 | 4 | 5 | 6 | 7"
+    return
+  end
+
+  def to_twitter
+    5.downto(0) do |row_num|
+      row_values = []
+      0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(row_num) }
       print "|" + row_values.join
     end
     print "|\n"
+  end
+
+  def self.from_string(string)
+    board = Board.new
+    c4_array = string.gsub!("|", "").split(//).each_slice(7).to_a.reverse
+    c4_array.each do |row|
+      row.each_with_index { |token, index| board.insert(index + 1, token) if token == 'X' || token == 'O' }
+    end
+    board
   end
 end
