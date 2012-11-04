@@ -83,25 +83,22 @@ class Board
   end
 
   def to_twitter
-    board_str = ""
+    twitter_board = ""
     5.downto(0) do |row_num|
       row_values = []
       0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(row_num) }
-      board_str += "|" + row_values.join
+      twitter_board += "|" + row_values.join
     end
-    board_str += "|"
-    return board_str
+    twitter_board += "|"
+    return twitter_board
   end
 
-  def self.from_string(s)
-    puts "in method self.from_string"
+  def self.from_string(twitter_board)
     board = Board.new
-    p s.gsub("|", "")
-    c4_array = s.gsub("|", "").split(//).each_slice(7).to_a.reverse
+    c4_array = twitter_board.gsub("|", "").split(//).each_slice(7).to_a.reverse
     c4_array.each do |row|
       row.each_with_index { |token, index| board.insert(index + 1, token) if token == 'X' || token == 'O' }
     end
-    puts "leaving method ..."
     board
   end
 end
