@@ -1,7 +1,29 @@
 Connect-Four
 ============
 
-Connect Four
+twitter bot handle: @connected_four
 
-twitter = connected four
-password = connected4
+To run the connect four twitter bot, please run the connect_four.rb file located in Connect-Four/lib/ with ruby.
+
+When the bot tweets "Who wants to get demolished? #dbc_c4",
+Reply with "@connected_four Game on! #dbc_c4" to start the game.
+
+          _____
+         /_____\
+    ____[\`---'/]____
+   /\ #\ \_____/ /# /\
+  /  \# \_.---._/ #/  \
+ /   /|\  |   |  /|\   \
+/___/ | | |   | | | \___\
+|  |  | | |---| | |  |  |
+|__|  \_| |_#_| |_/  |__|
+//\\  <\ _//^\\_ />  //\\
+\||/  |\//// \\\\/|  \||/
+      |   |   |   |
+      |---|   |---|
+      |---|   |---|
+      |   |   |   |
+      |___|   |___|
+      /   \   /   \
+     |_____| |_____|
+     |HHHHH| |HHHHH|

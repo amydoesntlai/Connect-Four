@@ -15,6 +15,10 @@ class Connect4Twitter
   end
 
   private
+  def initialize
+    @ai = AI.new('AI', 'ai@example.com')
+  end
+
   BOT_NAME = "connected_four"
 
   TWITTER_CONSUMER_KEY       = 'lYLogI01i8DFgko9yhV3Q'
@@ -49,8 +53,9 @@ class Connect4Twitter
 
   def initial_start(tweet)
     new_board = Board.from_string("|.......|.......|.......|.......|.......|.......|")
-    new_board.insert((rand(7) + 1), "X")
-    Twitter.update("@#{tweet.from_user} #{board.to_twitter} #dbc_c4 ##{shuffle_hashtag}")
+    new_board.insert(4, "O")
+    puts new_board.to_s
+    Twitter.update("@#{tweet.from_user} #{new_board.to_twitter} #dbc_c4 ##{shuffle_hashtag}")
   end
 
   def accept_challenge(tweet)
@@ -62,13 +67,19 @@ class Connect4Twitter
   end
 
   def bot_piece(twitter_board)
-    twitter_board.scan(/X/i).length == twitter_board.scan(/O/i).length ? "X" : "O"
+    twitter_board.scan(/X/i).length == twitter_board.scan(/O/i).length ? "O" : "X"
   end
 
   def play_game(tweet)
     twitter_board = tweet.text.split(' ')[1]
     board = Board.from_string(twitter_board)
-    board.insert((rand(7) + 1), bot_piece(twitter_board))
-    Twitter.update("@#{tweet.user[:screen_name]} #{board.to_twitter} #dbc_c4 ##{shuffle_hashtag}")
+    board.insert(@ai.move(board, bot_piece(twitter_board)), bot_piece(twitter_board))
+    if board.win?
+      Twitter.update("@#{tweet.user[:screen_name]} #{board.to_twitter} I win! Good game. #dbc_c4 ##{shuffle_hashtag}")
+    elsif !board.win? && board.full?
+      Twitter.update("@#{tweet.user[:screen_name]} #{board.to_twitter} Draw game. Play again? #dbc_c4 ##{shuffle_hashtag}")
+    else
+      Twitter.update("@#{tweet.user[:screen_name]} #{board.to_twitter} #dbc_c4 ##{shuffle_hashtag}")
+    end
   end
 end
