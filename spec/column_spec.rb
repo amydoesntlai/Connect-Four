@@ -9,9 +9,9 @@ describe Column do
 
   context '#initialize' do
 
-    it 'is intialized to have 6 0s' do
+    it 'is intialized to have 6 dots' do
       0.upto(5) do |num|
-        @column.get_value_at(num).should eq " "
+        @column.get_value_at(num).should eq "."
       end
     end
 
@@ -51,8 +51,8 @@ describe Column do
       @column.get_value_at(3).should eq "X"
     end
 
-    it 'returns 0 from an empty space' do
-      @column.get_value_at(5).should eq " "
+    it 'returns . from an empty space' do
+      @column.get_value_at(5).should eq "."
     end
 
   end

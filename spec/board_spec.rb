@@ -26,7 +26,7 @@ describe Board do
     it "returns all column values" do
       board.insert(2, "X")
       board.columns[1].stub(:get_value_at).and_return("X")
-      board.column_values.should eq ["X", "X", "X", "X", "X", "X"]
+      board.column_values(1).should eq ["X", "X", "X", "X", "X", "X"]
     end
   end
 
@@ -34,16 +34,16 @@ describe Board do
     it "returns all row values" do
       board.insert(2, "O")
       0.upto(6) { |i| board.columns[i].stub(:get_value_at).and_return("O") }
-      board.row_values.should eq ["O", "O", "O", "O", "O", "O", "O"]
+      board.row_values(1).should eq ["O", "O", "O", "O", "O", "O", "O"]
     end
   end
 
   context "#diagonal_values" do
     it "returns positive slope diagonal values" do
       board.insert(4, "O")
-      board.positive_diagonal_values.should eq ["O", ".", ".", "."]
+      board.positive_diagonal_values(5).should eq ["O", ".", ".", "."]
       3.times { board.insert(5, "O") }
-      board.positive_diagonal_values.should eq [".", ".", "O", ".", "."]
+      board.positive_diagonal_values(4).should eq [".", ".", "O", ".", "."]
     end
   end
 
@@ -78,7 +78,7 @@ describe Board do
       board.win?.should be_true
     end
 
-    it "returns true when there is a connect four on a positive slope diagonal" do
+    it "returns true when there is a connect four on a positive slope diagonal starting column index 0" do
       board.insert(1, "O")
       board.insert(2, "X")
       board.insert(2, "O")
@@ -86,6 +86,17 @@ describe Board do
       board.insert(3, "O")
       3.times { board.insert(4, "X") }
       board.insert(4, "O")
+      board.win?.should be_true
+    end
+
+    it "returns true when there is a connect four on a positive slope diagonal starting column index 3" do
+      board.insert(4, "O")
+      board.insert(5, "X")
+      board.insert(5, "O")
+      2.times { board.insert(6, "X") }
+      board.insert(6, "O")
+      3.times { board.insert(7, "X") }
+      board.insert(7, "O")
       board.win?.should be_true
     end
 
@@ -121,18 +132,23 @@ describe Board do
       board.win?.should be_true
     end
 
-    it "returns false when there is a draw" do
-      0.upto(2) do |column|
-        3.times { board.insert(column, "O") }
-        3.times { board.insert(column, "X") }
-      end
-      3.upto(5) do |column|
-        3.times { board.insert(column, "X") }
-        3.times { board.insert(column, "O") }
-      end
-      3.times { board.insert(6, "O") }
+    it "indicates a full board with no win when there is a draw" do
+      3.times { board.insert(1, "O") }
+      3.times { board.insert(1, "X") }
+      3.times { board.insert(2, "X") }
+      3.times { board.insert(2, "O") }
+      3.times { board.insert(3, "O") }
+      3.times { board.insert(3, "X") }
+      3.times { board.insert(4, "X") }
+      3.times { board.insert(4, "O") }
+      3.times { board.insert(5, "O") }
+      3.times { board.insert(5, "X") }
       3.times { board.insert(6, "X") }
+      3.times { board.insert(6, "O") }
+      3.times { board.insert(7, "O") }
+      3.times { board.insert(7, "X") }
       board.win?.should be_false
+      board.full?.should be_true
     end
 
     it "returns false when the game is not finished" do

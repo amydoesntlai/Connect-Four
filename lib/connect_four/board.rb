@@ -10,50 +10,53 @@ class Board
 
   def insert(column_num, token)
     return if @columns[column_num - 1].number_of_pieces == 6
-    @current_row = @columns[column_num - 1].insert(token) - 1
-    @current_column = column_num - 1
+    @columns[column_num - 1].insert(token)
   end
 
-  def column_values
+  def column_values(column_num)
     column_values = []
-    0.upto(5) { |row| column_values << @columns[@current_column].get_value_at(row) }
+    0.upto(5) { |row| column_values << @columns[column_num].get_value_at(row) }
     column_values
   end
 
-  def row_values
+  def row_values(row_num)
     row_values = []
-    0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(@current_row) }
+    0.upto(6) { |column_num| row_values << @columns[column_num].get_value_at(row_num) }
     row_values
   end
 
-  def positive_diagonal_values
+  def positive_diagonal_values(column_num)
+    #this method checks diagonals for the column_num at row with index 2 (0-based)
     diagonal_values = []
-    row_num = 0
-    column_num = 0
-    row_num = @current_row - @current_column if @current_row > @current_column
-    column_num = @current_column - @current_row if @current_column > @current_row
-    while column_num < 7 && row_num < 6
-      diagonal_values << @columns[column_num].get_value_at(row_num)
-      column_num += 1
-      row_num += 1
+    if column_num <= 2
+      iterating_row = 2 - column_num
+      iterating_column = 0
+    else
+      iterating_row = 0
+      iterating_column = column_num - 2
+    end
+    while iterating_column < 7 && iterating_row < 6
+      diagonal_values << @columns[iterating_column].get_value_at(iterating_row)
+      iterating_column += 1
+      iterating_row += 1
     end
     diagonal_values
   end
 
-  def negative_diagonal_values
+  def negative_diagonal_values(column_num)
+    #this method checks diagonals for the column_num at row with index 2 (0-based)
     diagonal_values = []
-    sum = @current_row + @current_column
-    if sum <= 6
-      column_num = sum
-      row_num = 0
+    if column_num > 4
+      iterating_row = 6 - column_num
+      iterating_column = 6
     else
-      column_num = 6
-      row_num = sum - 6
+      iterating_row = 0
+      iterating_column = column_num + 2
     end
-    while row_num < 6
-      diagonal_values << @columns[column_num].get_value_at(row_num)
-      column_num -= 1
-      row_num += 1
+    while iterating_row < 6
+      diagonal_values << @columns[iterating_column].get_value_at(iterating_row)
+      iterating_column -= 1
+      iterating_row += 1
     end
     diagonal_values
   end
@@ -65,11 +68,17 @@ class Board
   end
 
   def win?
-    connect_four?(column_values) || connect_four?(row_values) || connect_four?(positive_diagonal_values) || connect_four?(negative_diagonal_values)
+    0.upto(6) do |column_num|
+      return true if connect_four?(column_values(column_num)) || connect_four?(positive_diagonal_values(column_num)) || connect_four?(negative_diagonal_values(column_num))
+    end
+    0.upto(5) do |row_num|
+      return true if connect_four?(row_values(row_num))
+    end
+    false
   end
 
   def full?
-    row_values.all? { |value| value != "." } && @current_row == 5
+    row_values(5).all? { |value| value != "." }
   end
 
   def to_s
