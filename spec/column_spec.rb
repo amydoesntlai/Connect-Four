@@ -57,5 +57,25 @@ describe Column do
 
   end
 
+  context '#full?' do
+    it 'returns true when the column is full' do
+      @column.insert("O")
+      @column.insert("X")
+      @column.insert("O")
+      @column.insert("X")
+      @column.insert("O")
+      @column.insert("X")
+      @column.full?.should be_true
+    end
+
+    it 'returns false when the column is not full' do
+      @column.insert("O")
+      @column.insert("X")
+      @column.insert("O")
+      @column.insert("X")
+      @column.insert("O")
+      @column.full?.should be_false
+    end
+  end
 
 end

@@ -1,4 +1,4 @@
-require_relative '../connect_four'
+# require_relative '../connect_four'
 
 class Game
   def initialize
@@ -27,7 +27,7 @@ class Game
     puts "\nConnected Four presents Connect 4!!!\n\n"
     @board.to_s
     begin
-      if @board.insert(current_player.move(@board), current_token)
+      if @board.insert(current_player.move(@board, current_token), current_token)
         toggle_player
       else
         puts "invalid move, try again!!!!"
@@ -92,7 +92,7 @@ class Game
     end
 
     if @player2 =~ /cpu/i
-      @players <<  AI.new("#{@player1}", "AI@dbc.com")
+      @players <<  AI.new("#{@player2}", "AI@dbc.com")
     else
       new_player2 = Human.new("#{@player2}", "#{@player2_email}")
       new_player2.save_to_db(@db)

@@ -211,4 +211,48 @@ describe Board do
       end
     end
   end
+
+  describe '#close_to_win' do
+    # (values, marker)
+    it 'returns the column with 3 in a row' do
+      2.upto(4) { |column| board.insert(column, "X") }
+      board.close_to_win(board.row_values(0), "X").should eq 0
+    end
+
+    it "returns nil when no 3-in-a-row patterns are found" do
+      board.insert(3, "X")
+      board.insert(4, "O")
+      board.insert(5, "X")
+      board.insert(6, "X")
+      board.close_to_win(board.row_values(0), "X").should be_nil
+    end
+
+    it "returns the column with 3 not in a row" do
+      board.insert(3, "X")
+      board.insert(4, ".")
+      board.insert(5, "X")
+      board.insert(6, "X")
+      board.close_to_win(board.row_values(0), "X").should eq 3
+    end
+  end
+
+  describe '#column_close_to_win' do
+    it 'returns the column with 3 in a row and an empty space above' do
+      3.times { board.insert(3, "X") }
+      board.column_close_to_win('X').should eq 2
+    end
+    # (marker)
+
+    it 'returns nil when there is 3 in a row in a column and filled with the opponent marker above' do
+      3.times { board.insert(3, "X") }
+      board.insert(3, "O")
+      board.column_close_to_win('X').should be_nil
+    end
+
+    it 'returns nil when the column is full' do
+      3.times { board.insert(3, "X") }
+      3.times { board.insert(3, "O") }
+      board.column_close_to_win("O").should be_nil
+    end
+  end
 end

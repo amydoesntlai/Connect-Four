@@ -1,6 +1,7 @@
 class Column
 
   attr_reader :number_of_pieces
+
   def initialize
     @number_of_pieces = 0
     @values = Array.new(6, ".")
@@ -15,6 +16,10 @@ class Column
     # raise("Column is full!") if @number_of_pieces == 6
     @values[@number_of_pieces] = item
     @number_of_pieces += 1
+  end
+
+  def full?
+    @number_of_pieces == 6
   end
 
 end

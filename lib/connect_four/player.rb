@@ -34,7 +34,7 @@ class Player
     # self
   end
 
-  def move(board = nil)
+  def move(board = nil, move = nil)
     raise ("This method must be initialized by a subclass.")
   end
 
@@ -53,7 +53,7 @@ end
 
 
 class Human < Player
-  def move(board = nil)
+  def move(board = nil, token = nil)
     next_move = gets.chomp.to_i
     if next_move > 7 || next_move < 1
       puts "invalid move, try again!?!?"

@@ -1,5 +1,7 @@
 class Board
-  attr_reader :columns, :current_row, :current_column
+
+  attr_reader :columns
+
   def initialize
     @columns = Array.new(7) { Column.new }
   end
@@ -9,7 +11,7 @@ class Board
   end
 
   def insert(column_num, token)
-    return if @columns[column_num - 1].number_of_pieces == 6
+    return if @columns[column_num - 1].full?
     @columns[column_num - 1].insert(token)
   end
 
@@ -46,17 +48,17 @@ class Board
   def negative_diagonal_values(column_num)
     #this method checks diagonals for the column_num at row with index 2 (0-based)
     diagonal_values = []
-    if column_num > 4
-      iterating_row = 6 - column_num
-      iterating_column = 6
+    if column_num < 3
+      iterating_row = 2 + column_num
+      iterating_column = 0
     else
-      iterating_row = 0
-      iterating_column = column_num + 2
+      iterating_row = 5
+      iterating_column = column_num - 3
     end
-    while iterating_row < 6
+    while iterating_row >= 0 && iterating_column < 7
       diagonal_values << @columns[iterating_column].get_value_at(iterating_row)
-      iterating_column -= 1
-      iterating_row += 1
+      iterating_column += 1
+      iterating_row -= 1
     end
     diagonal_values
   end
@@ -79,6 +81,25 @@ class Board
 
   def full?
     row_values(5).all? { |value| value != "." }
+  end
+
+  #for AI
+  def close_to_win(values, marker)
+    open_spaces = []
+    values.each_cons(4).each_with_index do |four, index|
+      open_spaces << index     if four == [".", marker, marker, marker]
+      open_spaces << index + 1 if four == [marker, ".", marker, marker]
+      open_spaces << index + 2 if four == [marker, marker, ".", marker]
+      open_spaces << index + 3 if four == [marker, marker, marker, "."]
+    end
+    open_spaces
+  end
+
+  def column_close_to_win(marker)
+    0.upto(6) do |column_num|
+      return column_num if column_values(column_num).each_cons(4).any? { |four| four == [marker, marker, marker, "."] }
+    end
+    nil
   end
 
   def to_s
