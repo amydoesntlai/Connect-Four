@@ -9,8 +9,8 @@ class Connect4Twitter
       if tweet.text.include?("@#{BOT_NAME}") && name != "#{BOT_NAME}"
         tweet.text.include?("Game on!") ? initial_start(tweet) : play_game(tweet)
       end
-      accept_challenge(tweet) if (tweet.text.include?("Who wants to get demolished? #dbc_c4") && name != "#{BOT_NAME}")
-      send_challenge if gameover?(tweet)
+      accept_challenge(tweet) if tweet.text.include?("Who wants to get demolished? #dbc_c4") && name != "#{BOT_NAME}"
+      send_challenge          if gameover?(tweet)
     end
   end
 
@@ -62,8 +62,7 @@ class Connect4Twitter
   end
 
   def bot_piece(twitter_board)
-    twitter_board.scan(/X/i).length == twitter_board.scan(/O/i).length ? piece = "X" : piece = "O"
-    piece
+    twitter_board.scan(/X/i).length == twitter_board.scan(/O/i).length ? "X" : "O"
   end
 
   def play_game(tweet)
